@@ -2,6 +2,8 @@ import type { NextAuthConfig } from 'next-auth'
 
 // Edge-compatible config — no Prisma imports here
 export const authConfig: NextAuthConfig = {
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  trustHost: true,
   session: { strategy: 'jwt', maxAge: 60 * 60 * 8 },
   pages: { signIn: '/login' },
   callbacks: {

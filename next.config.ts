@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const config: NextConfig = {
+  serverExternalPackages: ['pg', 'bcryptjs', '@prisma/adapter-pg'],
+  turbopack: {
+    root: __dirname,
+  },
+}
 
-export default nextConfig;
+export default config
