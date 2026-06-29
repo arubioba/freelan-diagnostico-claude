@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role     @default(SALES)
+  createdAt DateTime @default(now())
+
+  diagnoses Diagnosis[]
+}
+
+enum Role {
+  ADMIN
+  SALES
+}
+
+model Diagnosis {
+  id          String          @id @default(cuid())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  status      DiagnosisStatus @default(PENDING)
+
+  contactName  String
+  contactEmail String
+  contactRole  String
+
+  companyName  String
+  companyUrl   String
+  industry     String
+
+  meetingNotes String @db.Text
+
+  researchData Json?
+  htmlOutput   String? @db.Text
+
+  hubspotContactId String?
+  hubspotCompanyId String?
+
+  shareSlug     String?  @unique
+  sharePassword String?
+  shareExpires  DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+enum DiagnosisStatus {
+  PENDING
+  RESEARCHING
+  ENRICHING
+  GENERATING
+  COMPLETED
+  ERROR
+}
